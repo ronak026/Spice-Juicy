@@ -49,14 +49,13 @@ Key modules:
 
 Add screenshots/gifs to `static/images/` and reference them here:
 
-```md
+
 <img width="1915" height="930" alt="image" src="https://github.com/user-attachments/assets/4bf2a7ed-5adf-4b30-a0dc-28df58fb5ae2" />
 
 <img width="1919" height="1034" alt="image" src="https://github.com/user-attachments/assets/ba111c2a-ff93-4d36-b6c9-506c073da353" />
 
 <img width="1919" height="832" alt="image" src="https://github.com/user-attachments/assets/c4280cc5-8d22-43d8-ac3a-0f830a20ce8c" />
 
-```
 
 ## Getting Started
 
