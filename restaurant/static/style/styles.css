@@ -1,0 +1,109 @@
+
+/* login and register */
+
+body {
+  background: #FAF3E0; /* soft beige background */
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Auth Container */
+.auth-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Headings */
+h2 {
+  color: #333333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Labels */
+.auth-container label {
+  display: block;
+  margin-bottom: .5rem;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* Inputs */
+.auth-container input {
+  width: 100%;
+  padding: .75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.auth-container button {
+  background: #E63946; /* red for Register */
+  color: white;
+  border: none;
+  padding: .75rem;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background .3s ease;
+}
+.auth-container button:hover {
+  background: #C72C3B; /* darker red */
+}
+
+/* Login page override (orange button) */
+.auth-container.login button {
+  background: #F77F00; /* orange for Login */
+}
+.auth-container.login button:hover {
+  background: #d56a00;
+}
+
+/* Error Messages */
+.error {
+  color: #E63946;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Messages (success, error, info) */
+.message {
+  margin-bottom: 1rem;
+  padding: .5rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+.message.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+.message.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Footer text (register/login links) */
+.auth-container p {
+  text-align: center;
+  margin-top: 1rem;
+}
+.auth-container a {
+  color: #F77F00; /* orange link */
+  text-decoration: none;
+  font-weight: bold;
+}
+.auth-container a:hover {
+  text-decoration: underline;
+}
+

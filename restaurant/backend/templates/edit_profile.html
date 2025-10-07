@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="edit-profile-container">
+  
+  <!-- Header -->
+  <div class="edit-header">
+    <a href="{% url 'restaurant:profile' %}" class="back-btn">
+      <img src="{% static 'images/icons/back.png' %}" alt="Back">
+    </a>
+    <h2>Edit Profile</h2>
+  </div>
+
+  <!-- Flash Messages -->
+  {% if messages %}
+  <div class="alert-container">
+    {% for message in messages %}
+      <div class="alert {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Profile Edit Form -->
+  <div class="edit-form">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="input-group">
+        {{ user_form.username.label_tag }}
+        {{ user_form.username }}
+        {{ user_form.username.errors }}
+      </div>
+
+      <div class="input-group">
+        {{ profile_form.name.label_tag }}
+        {{ profile_form.name }}
+        {{ profile_form.name.errors }}
+      </div>
+
+      <div class="input-group">
+        {{ user_form.email.label_tag }}
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+      </div>
+
+      <div class="input-group">
+        {{ profile_form.phone.label_tag }}
+        {{ profile_form.phone }}
+        {{ profile_form.phone.errors }}
+      </div>
+
+      <div class="input-group">
+        {{ profile_form.profile_picture.label_tag }}
+        {{ profile_form.profile_picture }}
+        {{ profile_form.profile_picture.errors }}
+      </div>
+
+      <div class="input-group">
+        {{ profile_form.bio.label_tag }}
+        {{ profile_form.bio }}
+        {{ profile_form.bio.errors }}
+      </div>
+
+      <button type="submit" class="save-btn">💾 Update Profile</button>
+    </form>
+  </div>
+</div>
+
+<style>
+/* --- Page Container --- */
+.edit-profile-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  font-family: "Poppins", sans-serif;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Header --- */
+.edit-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 10px;
+}
+
+.back-btn img {
+  width: 28px;
+  height: 28px;
+  margin-right: 15px;
+  transition: transform 0.2s ease;
+}
+
+.back-btn img:hover {
+  transform: scale(1.1);
+}
+
+.edit-header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* --- Flash Messages --- */
+.alert-container {
+  margin-bottom: 15px;
+}
+
+.alert {
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+}
+
+.alert.success {
+  background-color: #e6f9ee;
+  border-color: #b6f0cb;
+  color: #1c7c45;
+}
+
+.alert.error {
+  background-color: #fdeaea;
+  border-color: #f5bcbc;
+  color: #a81c1c;
+}
+
+/* --- Form Styling --- */
+.edit-form {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  background-color: #fdfdfd;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color:  #F77F00;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* --- Button --- */
+.save-btn {
+  width: 100%;
+  background-color:  #F77F00;
+  color: white;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* --- Scrollbar --- */
+.edit-form::-webkit-scrollbar {
+  width: 6px;
+}
+.edit-form::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+.edit-form::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .edit-profile-container {
+    padding: 20px 15px;
+  }
+  .edit-header h2 {
+    font-size: 1.5rem;
+  }
+  .save-btn {
+    font-size: 1rem;
+  }
+}
+
+</style>
+{% endblock %}

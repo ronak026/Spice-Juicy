@@ -1,0 +1,233 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Your Cart{%endblock %} {% block content %}
+<div class="cart-container">
+  <h1 class="cart-title">Your Cart</h1>
+
+  {% if cart_items %}
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+      <tr>
+        <td class="cart-item-info">
+          {% if item.menu_item.image_url %}
+          <img
+            src="{{ item.menu_item.image_url }}"
+            alt="{{ item.menu_item.name }}"
+            class="cart-img"
+          />
+          {% endif %}
+          <span>{{ item.menu_item.name }}</span>
+        </td>
+        <td>{{ item.menu_item.category.name }}</td>
+        <td>₹{{ item.menu_item.price }}</td>
+        <td>
+          <form
+            action="{% url 'restaurant:update_cart_quantity' item.id %}"
+            method="post"
+            class="quantity-form"
+          >
+            {% csrf_token %}
+            <input
+              type="number"
+              name="quantity"
+              value="{{ item.quantity }}"
+              min="1"
+            />
+            <button type="submit" class="update-btn">Update</button>
+          </form>
+        </td>
+        <td>₹{{ item.subtotal }}</td>
+        <td>
+          <form
+            action="{% url 'restaurant:remove_from_cart' item.menu_item.id %}"
+            method="post"
+          >
+            {% csrf_token %}
+            <button type="submit" class="remove-btn">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="cart-total">
+    <p>Total: <strong>₹{{ total_price }}</strong></p>
+    <a href="{% url 'restaurant:place-order' %}" class="place-order-btn"
+      >Place Order</a
+    >
+  </div>
+
+  {% else %}
+  <p>
+    Your cart is empty.
+    <a href="{% url 'restaurant:menu' %}">Go back to menu.</a>
+  </p>
+  {% endif %}
+</div>
+
+<style>
+  .cart-container {
+    max-width: 950px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+  }
+
+  .cart-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  .cart-table th, .cart-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .cart-table th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+  }
+
+  .cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cart-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .quantity-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .quantity-form input[type="number"] {
+    width: 60px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .update-btn, .remove-btn, .place-order-btn {
+    padding: 7px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .update-btn {
+    background-color: #e64a19;
+  }
+  .update-btn:hover { background-color: #092b50ff; }
+
+  .remove-btn {
+    background-color: #dc3545;
+  }
+  .remove-btn:hover { background-color: #c82333; }
+
+  .place-order-btn {
+    background-color: #28a745;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  .place-order-btn:hover { background-color: #218838; }
+
+  .cart-total {
+    text-align: right;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+
+  .cart-total p {
+    margin: 0 0 10px 0;
+  }
+
+  @media (max-width: 768px) {
+    .cart-table th, .cart-table td {
+      padding: 8px;
+      font-size: 14px;
+    }
+    .cart-img { width: 40px; height: 40px; }
+    .quantity-form input[type="number"] { width: 50px; padding: 4px; }
+    .update-btn, .remove-btn, .place-order-btn { padding: 6px 10px; font-size: 13px; }
+    .cart-total { font-size: 16px; }
+  }
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .toast {
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .toast.success {
+    background-color: #28a745;
+  }
+  .toast.warning {
+    background-color: #ff9800;
+  }
+  .toast.error {
+    background-color: #f44336;
+  }
+  .toast.hide {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
+{% endblock %}

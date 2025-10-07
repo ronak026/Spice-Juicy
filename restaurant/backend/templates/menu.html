@@ -1,0 +1,297 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Menu{% endblock %}
+{% block content %}
+<div class="menu-container">
+  <h1 class="menu-title">Our Delicious Menu</h1>
+
+  <!-- 🔸 Category Filter -->
+  <div class="filter-bar">
+    <div class="category-filters">
+      <a href="{% url 'restaurant:menu' %}"
+         class="filter-btn {% if not selected_category %}active{% endif %}">
+         All
+      </a>
+      {% for cat in categories %}
+        <a href="?category={{ cat }}"
+           class="filter-btn {% if cat == selected_category %}active{% endif %}">
+           {{ cat }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 🧾 Menu Items Grid -->
+  {% if items %}
+    <h2>
+      {% if selected_category %}
+        {{ selected_category }} Dishes
+      {% elif query %}
+        Search Results for "{{ query }}"
+      {% else %}
+        All Menu Items
+      {% endif %}
+    </h2>
+
+    <div class="menu-grid">
+      {% for item in items %}
+        <div class="menu-card">
+          <div class="menu-img-container">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="menu-img">
+            {% if item.discount %}
+              <div class="discount-badge">{{ item.discount }}% OFF</div>
+            {% endif %}
+          </div>
+          <div class="menu-details">
+            <h3 class="menu-name">{{ item.name }}</h3>
+            <p class="menu-category">{{ item.category }}</p>
+            <p class="menu-description">{{ item.description }}</p>
+
+            <div class="menu-footer">
+              <span class="menu-price">₹{{ item.price }}</span>
+              <a href="{% url 'restaurant:add_to_cart' item.id %}" class="order-btn">
+                Add to Cart
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-msg">No items found. Try another search or category.</p>
+  {% endif %}
+</div>
+
+
+<style>
+.menu-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px rgba(247, 127, 0, 0.6); /* soft orange glow */
+}
+
+/* Optional: Add text color accent when glowing */
+.menu-card:hover .menu-name {
+  color: #F77F00;
+}
+.menu-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: "Poppins", sans-serif;
+}
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 20px rgba(247, 127, 0, 0.4); }
+  50% { box-shadow: 0 0 35px rgba(247, 127, 0, 0.7); }
+  100% { box-shadow: 0 0 20px rgba(247, 127, 0, 0.4); }
+}
+
+.menu-card:hover {
+  transform: translateY(-6px);
+  animation: glowPulse 1.5s infinite;
+}
+
+.menu-title {
+  text-align: center;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.menu-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+.menu-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(247, 127, 0, 0.6),
+              0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-img-container {
+  position: relative;
+}
+
+.menu-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.discount-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: #005eff;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.menu-details {
+  padding: 15px 18px;
+}
+
+.menu-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.menu-category {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #333;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.menu-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-location {
+  color: #999;
+  font-size: 13px;
+}
+
+.menu-rating {
+  background-color: #48c479;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+
+.menu-distance {
+  color: #777;
+  font-size: 13px;
+}
+
+.menu-action {
+  margin-top: 10px;
+}
+
+.order-btn {
+  display: inline-block;
+  background-color: #F77F00;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.order-btn:hover {
+  background-color: #e04549;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #777;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+h2 {
+  margin-top: 40px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-bar {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.filter-btn {
+  display: inline-block;
+  margin: 0 8px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #333;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.filter-btn:hover {
+  background-color: #F77F00;
+  color: #fff;
+}
+.filter-btn.active {
+  background-color: #F77F00;
+  color: #fff;
+}
+.category-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.menu-description {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 12px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.menu-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2dcb33;
+}
+@media (max-width: 600px) {
+  .menu-img {
+    height: 150px;
+  }
+}
+@media (max-width: 400px) {
+  .menu-img {
+    height: 120px;
+  }
+}
+</style>
+{% endblock %}

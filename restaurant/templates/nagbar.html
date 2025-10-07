@@ -1,0 +1,45 @@
+{% load static %}
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a href="{% url 'restaurant:home' %}">
+      <img src="{% static 'images/cutlery.png' %}" alt="Restaurant Logo" class="logo" />
+      Spice & Juicy
+    </a>
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+  </div>
+  <div class="search">
+    <form action="{% url 'restaurant:menu' %}" method="get">
+      <input type="text" name="q" placeholder="Search menu..." value="{{ request.GET.q|default:'' }}">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <ul class="navbar-menu" id="navbar-menu">
+    <li><a href="{% url 'restaurant:home' %}">Home</a></li>
+    <li><a href="{% url 'restaurant:menu' %}">Menu</a></li>
+    <li><a href="{% url 'restaurant:view_cart' %}">Cart</a></li>
+    <li><a href="{% url 'restaurant:place-order' %}">Order</a></li>
+
+    {% if user.is_authenticated %}
+      <li><a href="{% url 'restaurant:profile' %}">Profile</a></li>
+      <li><a href="{% url 'restaurant:logout' %}">Logout</a></li>
+    {% else %}
+      <li><a href="{% url 'restaurant:login' %}">Login</a></li>
+      <li><a href="{% url 'restaurant:register' %}">Sign Up</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+<script>
+  document.getElementById("navbar-toggle").onclick = function () {
+  var menu = document.getElementById("navbar-menu");
+  if (menu.classList.contains("show")) {
+    menu.classList.remove("show");
+  } else {
+    menu.classList.add("show");
+  }
+};
+
+</script>
+<hr style="margin:0; padding:0; border:none; border-top:3px solid #030303ff;">
+<link rel="stylesheet" href="{% static 'style/main.css' %}">

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Welcome to Spice & Juicy{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to Our Restaurant</h1>
+    <p>Experience the best cuisine crafted with passion and fresh ingredients.</p>
+    <a href="{% url 'restaurant:menu' %}" class="btn-primary">See Our Menu</a>
+  </div>
+  <div class="hero-image">
+    <img src="{% static 'images/res.jpg' %}" alt="Delicious dishes" />
+  </div>
+</section>
+
+<!-- Featured Menu Highlights -->
+{% if expensive_dish %}
+<section class="most-expensive-dish">
+  <h2>Chef's Premium Dish</h2>
+  <div class="dish-row">
+    {% if expensive_dish.image_url %}
+      <img src="{{ expensive_dish.image_url }}" alt="{{ expensive_dish.name }}" class="dish-image" />
+    {% endif %}
+    <div class="dish-info">
+      <h3>{{ expensive_dish.name }}</h3>
+      <p>{{ expensive_dish.description|truncatewords:20 }}</p>
+    </div>
+    <div class="dish-price">
+      <p>₹{{ expensive_dish.price }}</p>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- About Section -->
+<section class="about">
+  <h2>About Us</h2>
+  <p>
+    Founded in 2025, Our Restaurant aims to bring you the finest dishes with
+    locally sourced ingredients. Our chefs blend traditional recipes and modern
+    techniques to delight your palate.
+  </p>
+  <img src="{% static 'images/about-us.jpg' %}" alt="Our Restaurant Team" />
+</section>
+
+<!-- Contact/Reservation CTA -->
+<section class="contact-cta">
+  <h2>Ready to Dine With Us?</h2>
+  <p>Book a table now or order online for delivery!</p>
+  <a href="{% url 'restaurant:place-order' %}" class="btn-primary">Place an Order</a>
+  <a href="{% url 'restaurant:manage_address' %}" class="btn-secondary">Add Delivery Address</a>
+</section>
+
+{% endblock %}

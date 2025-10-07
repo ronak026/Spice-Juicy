@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Order{% endblock %}
+
+{% block content %}
+<div class="place-order-container">
+    <h1>Review Your Order</h1>
+
+    <h3>Delivery Address:</h3>
+    {% if address %}
+        <p>{{ address.line1 }}, {{ address.city }}, {{ address.state }} - {{ address.pincode }}</p>
+        <p>Phone: {{ user.profile.phone }}</p>
+    {% else %}
+        <p>No address found. Please add an address in your profile.</p>
+    {% endif %}
+
+    <h3>Items:</h3>
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.menu_item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.menu_item.price }}</td>
+                <td>₹{{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Total: ₹{{ total_price }}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="confirm-order-btn">Confirm Order</button>
+    </form>
+
+</div>
+<style>
+  .place-order-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  h1, h3 {
+    text-align: center;
+    color: #333;
+  }
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  .order-table th, .order-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  .order-table th {
+    background-color: #f2f2f2;
+  }
+  .confirm-order-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .confirm-order-btn:hover {
+    background-color: #218838;
+  }
+</style>
+{% endblock %}
+<script>
+  
+</script>

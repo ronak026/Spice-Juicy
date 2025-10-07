@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Order Success{% endblock %}
+
+{% block content %}
+<div style="text-align:center; margin-top:50px;">
+    <h1>🎉 Your order #{{ order.id }} has been placed successfully!</h1>
+    <p>Total: ₹{{ order.total_price }}</p>
+    <p>Status: {{ order.status|title }}</p>
+    <a href="{% url 'restaurant:menu' %}" style="margin-top:20px; display:inline-block;">Back to Menu</a>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    h1 {
+        color: #4CAF50;
+    }
+    a {
+        text-decoration: none;
+        color: #fff;
+        background-color: #4CAF50;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    a:hover {
+        background-color: #45a049;
+    }
+
+</style>
+{% endblock %}
