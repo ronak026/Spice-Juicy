@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 STRIPE_PUBLIC_KEY = "your_public_key_here"
 STRIPE_SECRET_KEY = "your_secret_key_here"
 
-UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY", "your_access_key_here")
+UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY", "your_default_access_key")
 # Application definition
 
 INSTALLED_APPS = [
@@ -84,7 +84,7 @@ DATABASES = {
         'USER': 'your_database_user',
         'PASSWORD': 'your_database_password',
         'HOST': 'your_database_host',  # e.g., 'localhost' or an IP address
-        'PORT': 'your_database_port',  # default is 5432
+        'PORT': 'port',  # default is 5432
     }
 }
 

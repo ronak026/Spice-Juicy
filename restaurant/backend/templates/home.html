@@ -34,6 +34,23 @@
   </div>
 </section>
 {% endif %}
+{% if top_dishes %}
+<section class="top-dishes">
+  <h2>Top Dishes</h2>
+  <div class="dishes-grid">
+    {% for dish in top_dishes %}
+      <div class="dish-card">
+        {% if dish.image_url %}
+          <img src="{{ dish.image_url }}" alt="{{ dish.name }}" class="dish-image" />
+        {% endif %}
+        <h3>{{ dish.name }}</h3>
+        <p>₹{{ dish.price }}</p>
+        <a href="{% url 'restaurant:menu' %}" class="btn-secondary">View Menu</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 
 <!-- About Section -->
 <section class="about">
@@ -43,7 +60,7 @@
     locally sourced ingredients. Our chefs blend traditional recipes and modern
     techniques to delight your palate.
   </p>
-  <img src="{% static 'images/about-us.jpg' %}" alt="Our Restaurant Team" />
+  <img src="{% static 'images/staff.jpg' %}" alt="Our Restaurant Team" />
 </section>
 
 <!-- Contact/Reservation CTA -->

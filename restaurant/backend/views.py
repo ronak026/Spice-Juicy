@@ -28,13 +28,15 @@ from django.urls import reverse
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def home(request):
-    expensive_dish = MenuItem.objects.filter(available=True).order_by('-price').first()
-
+    expensive_dish = MenuItem.objects.order_by('-price').first()
+    top_dishes = MenuItem.objects.order_by('-price')[:10]
+    
     return render(
         request,
         "home.html",
         {
             "expensive_dish": expensive_dish,
+            "top_dishes": top_dishes,
         }
     )
 
@@ -96,20 +98,34 @@ def update_cart_quantity(request, cart_item_id):
     return redirect("restaurant:view_cart")
 
 
+# @login_required
+# def add_to_cart(request, item_id):
+#     menu_item = get_object_or_404(MenuItem, id=item_id)
+#     cart, _ = Cart.objects.get_or_create(user=request.user)
+#     cart_item, created = CartItem.objects.get_or_create(cart=cart, menu_item=menu_item)
+#     if not created:
+#         cart_item.quantity += 1
+#         cart_item.save()
+#     if not request.user.is_authenticated:
+#         messages.error(request, "You need to be logged in to add items to your cart.")
+#         return redirect("restaurant:login")
+#     messages.success(request, f"Added {menu_item.name} to your cart.")
+#     return redirect("restaurant:menu")
+
 @login_required
 def add_to_cart(request, item_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to be logged in to add items to your cart.")
+        return redirect("restaurant:login")
+
     menu_item = get_object_or_404(MenuItem, id=item_id)
     cart, _ = Cart.objects.get_or_create(user=request.user)
     cart_item, created = CartItem.objects.get_or_create(cart=cart, menu_item=menu_item)
     if not created:
         cart_item.quantity += 1
         cart_item.save()
-    if not request.user.is_authenticated:
-        messages.error(request, "You need to be logged in to add items to your cart.")
-        return redirect("restaurant:login")
     messages.success(request, f"Added {menu_item.name} to your cart.")
     return redirect("restaurant:menu")
-
 
 @login_required
 def remove_from_cart(request, item_id):
